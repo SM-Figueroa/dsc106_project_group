@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NBA Player Stats Comparison</title>
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <style>
+    #buttons-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 100px); /* Adjust the button width as needed */
+      gap: 5px; /* Adjust the gap between buttons */
+      justify-content: center; /* Center the grid horizontally */
+    }
+
+    #buttons-container button {
+      width: 100%; /* Ensure each button takes the full width of its grid cell */
+      padding-top: 0%; /* Maintain a square aspect ratio for each button */
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="chart-container">
+  <div id="chart" style="margin: 0 auto; width: 800px;"></div>
+</div>
+
+<div id="buttons-container">
+    <!-- Buttons will go here -->
+    
+</div>
+
+<script>
+// Dataset
+var data = [
+    {
+        "player": "Kareem Abdul-Jabbar",
+        "points": "24.6",
+        "rebounds": "11.2",
+        "assists": "3.6"
+    },
+    {
+        "player": "Ray Allen",
+        "points": "18.9",
+        "rebounds": "4.1",
+        "assists": "3.4"
+    },
+    {
+        "player": "Giannis Antetokounmpo",
+        "points": "23.2",
+        "rebounds": "9.7",
+        "assists": "4.8"
+    },
+    {
+        "player": "Carmelo Anthony",
+        "points": "22.5",
+        "rebounds": "6.2",
+        "assists": "2.7"
+    },
+    {
+        "player": "Tiny Archibald",
+        "points": "18.8",
+        "rebounds": "2.3",
+        "assists": "7.4"
+    },
+    {
+        "player": "Paul Arizin",
+        "points": "22.8",
+        "rebounds": "8.6",
+        "assists": "2.3"
+    },
+    {
+        "player": "Charles Barkley",
+        "points": "22.1",
+        "rebounds": "11.7",
+        "assists": "3.9"
+    },
+    {
+        "player": "Rick Barry",
+        "points": "23.2",
+        "rebounds": "6.5",
+        "assists": "5.1"
+    },
+    {
+        "player": "Elgin Baylor",
+        "points": "27.4",
+        "rebounds": "13.5",
+        "assists": "4.3"
+    },
+    {
+        "player": "Dave Bing",
+        "points": "20.3",
+        "rebounds": "3.8",
+        "assists": "6.0"
+    },
+    {
+        "player": "Larry Bird",
+        "points": "24.3",
+        "rebounds": "10.0",
+        "assists": "6.3"
+    },
+    {
+        "player": "Kobe Bryant",
+        "points": "25.0",
+        "rebounds": "5.2",
+        "assists": "4.7"
+    },
+    {
+        "player": "Wilt Chamberlain",
+        "points": "30.1",
+        "rebounds": "22.9",
+        "assists": "4.4"
+    },
+    {
+        "player": "Bob Cousy",
+        "points": "18.4",
+        "rebounds": "5.2",
+        "assists": "7.5"
+    },
+    {
+        "player": "Dave Cowens",
+        "points": "17.6",
+        "rebounds": "13.6",
+        "assists": "3.8"
+    },
+    {
+        "player": "Billy Cunningham",
+        "points": "20.8",
+        "rebounds": "10.1",
+        "assists": "4.0"
+    },
+    {
+        "player": "Stephen Curry",
+        "points": "24.8",
+        "rebounds": "4.7",
+        "assists": "6.4"
+    },
+    {
+        "player": "Anthony Davis",
+        "points": "24.1",
+        "rebounds": "10.5",
+        "assists": "2.5"
+    },
+    {
+        "player": "Dave DeBusschere",
+        "points": "16.1",
+        "rebounds": "11.0",
+        "assists": "2.9"
+    },
+    {
+        "player": "Clyde Drexler",
+        "points": "20.4",
+        "rebounds": "6.1",
+        "assists": "5.6"
+    },
+    {
+        "player": "Tim Duncan",
+        "points": "19.0",
+        "rebounds": "10.8",
+        "assists": "3.0"
+    },
+    {
+        "player": "Kevin Durant",
+        "points": "27.3",
+        "rebounds": "7.0",
+        "assists": "4.4"
+    },
+    {
+        "player": "Julius Erving",
+        "points": "22.0",
+        "rebounds": "6.7",
+        "assists": "3.9"
+    },
+    {
+        "player": "Patrick Ewing",
+        "points": "21.0",
+        "rebounds": "9.8",
+        "assists": "1.9"
+    },
+    {
+        "player": "Walt Frazier",
+        "points": "18.9",
+        "rebounds": "5.9",
+        "assists": "6.1"
+    },
+    {
+        "player": "Kevin Garnett",
+        "points": "17.8",
+        "rebounds": "10.0",
+        "assists": "3.7"
+    },
+    {
+        "player": "George Gervin",
+        "points": "26.2",
+        "rebounds": "4.6",
+        "assists": "2.8"
+    },
+    {
+        "player": "Hal Greer",
+        "points": "19.2",
+        "rebounds": "5.0",
+        "assists": "4.0"
+    },
+    {
+        "player": "James Harden",
+        "points": "24.4",
+        "rebounds": "5.6",
+        "assists": "7.1"
+    },
+    {
+        "player": "John Havlicek",
+        "points": "20.8",
+        "rebounds": "6.3",
+        "assists": "4.8"
+    },
+    {
+        "player": "Elvin Hayes",
+        "points": "21.0",
+        "rebounds": "12.5",
+        "assists": "1.8"
+    },
+    {
+        "player": "Allen Iverson",
+        "points": "26.7",
+        "rebounds": "3.7",
+        "assists": "6.2"
+    },
+    {
+        "player": "LeBron James",
+        "points": "27.1",
+        "rebounds": "7.5",
+        "assists": "7.3"
+    },
+    {
+        "player": "Magic Johnson",
+        "points": "19.5",
+        "rebounds": "7.2",
+        "assists": "11.2"
+    },
+    {
+        "player": "Sam Jones",
+        "points": "17.7",
+        "rebounds": "4.9",
+        "assists": "2.5"
+    },
+    {
+        "player": "Michael Jordan",
+        "points": "30.1",
+        "rebounds": "6.2",
+        "assists": "5.3"
+    },
+    {
+        "player": "Jason Kidd",
+        "points": "12.6",
+        "rebounds": "6.3",
+        "assists": "8.7"
+    },
+    {
+        "player": "Kawhi Leonard",
+        "points": "19.9",
+        "rebounds": "6.4",
+        "assists": "3.0"
+    },
+    {
+        "player": "Damian Lillard",
+        "points": "25.2",
+        "rebounds": "4.2",
+        "assists": "6.7"
+    },
+    {
+        "player": "Jerry Lucas",
+        "points": "17.0",
+        "rebounds": "15.6",
+        "assists": "3.3"
+    },
+    {
+        "player": "Karl Malone",
+        "points": "25.0",
+        "rebounds": "10.1",
+        "assists": "3.6"
+    },
+    {
+        "player": "Moses Malone",
+        "points": "20.6",
+        "rebounds": "12.2",
+        "assists": "1.4"
+    },
+    {
+        "player": "Pete Maravich",
+        "points": "24.2",
+        "rebounds": "4.2",
+        "assists": "5.4"
+    },
+    {
+        "player": "Bob McAdoo",
+        "points": "22.1",
+        "rebounds": "9.4",
+        "assists": "2.3"
+    },
+    {
+        "player": "Kevin McHale",
+        "points": "17.9",
+        "rebounds": "7.3",
+        "assists": "1.7"
+    },
+    {
+        "player": "George Mikan",
+        "points": "23.1",
+        "rebounds": "13.4",
+        "assists": "2.8"
+    },
+    {
+        "player": "Reggie Miller",
+        "points": "18.2",
+        "rebounds": "3.0",
+        "assists": "3.0"
+    },
+    {
+        "player": "Earl Monroe",
+        "points": "18.8",
+        "rebounds": "3.0",
+        "assists": "3.9"
+    },
+    {
+        "player": "Steve Nash",
+        "points": "14.3",
+        "rebounds": "3.0",
+        "assists": "8.5"
+    },
+    {
+        "player": "Dirk Nowitzki",
+        "points": "20.7",
+        "rebounds": "7.5",
+        "assists": "2.4"
+    },
+    {
+        "player": "Shaquille O'Neal",
+        "points": "23.7",
+        "rebounds": "10.9",
+        "assists": "2.5"
+    },
+    {
+        "player": "Hakeem Olajuwon",
+        "points": "21.8",
+        "rebounds": "11.1",
+        "assists": "2.5"
+    },
+    {
+        "player": "Robert Parish",
+        "points": "14.5",
+        "rebounds": "9.1",
+        "assists": "1.4"
+    },
+    {
+        "player": "Chris Paul",
+        "points": "17.7",
+        "rebounds": "4.5",
+        "assists": "9.4"
+    },
+    {
+        "player": "Gary Payton",
+        "points": "16.3",
+        "rebounds": "3.9",
+        "assists": "6.7"
+    },
+    {
+        "player": "Bob Pettit",
+        "points": "26.4",
+        "rebounds": "16.2",
+        "assists": "3.0"
+    },
+    {
+        "player": "Paul Pierce",
+        "points": "19.7",
+        "rebounds": "5.6",
+        "assists": "3.5"
+    },
+    {
+        "player": "Scottie Pippen",
+        "points": "16.1",
+        "rebounds": "6.4",
+        "assists": "5.2"
+    },
+    {
+        "player": "Willis Reed",
+        "points": "18.7",
+        "rebounds": "12.9",
+        "assists": "1.8"
+    },
+    {
+        "player": "Oscar Robertson",
+        "points": "25.7",
+        "rebounds": "7.5",
+        "assists": "9.5"
+    },
+    {
+        "player": "David Robinson",
+        "points": "21.1",
+        "rebounds": "10.6",
+        "assists": "2.5"
+    },
+    {
+        "player": "Dennis Rodman",
+        "points": "7.3",
+        "rebounds": "13.1",
+        "assists": "1.8"
+    },
+    {
+        "player": "Bill Russell",
+        "points": "15.1",
+        "rebounds": "22.5",
+        "assists": "4.3"
+    },
+    {
+        "player": "Dolph Schayes",
+        "points": "18.5",
+        "rebounds": "12.1",
+        "assists": "3.1"
+    },
+    {
+        "player": "Bill Sharman",
+        "points": "17.8",
+        "rebounds": "3.9",
+        "assists": "3.0"
+    },
+    {
+        "player": "John Stockton",
+        "points": "13.1",
+        "rebounds": "2.7",
+        "assists": "10.5"
+    },
+    {
+        "player": "Isiah Thomas",
+        "points": "19.2",
+        "rebounds": "3.6",
+        "assists": "9.3"
+    },
+    {
+        "player": "Nate Thurmond",
+        "points": "15.0",
+        "rebounds": "15.0",
+        "assists": "2.7"
+    },
+    {
+        "player": "Wes Unseld",
+        "points": "10.8",
+        "rebounds": "14.0",
+        "assists": "3.9"
+    },
+    {
+        "player": "Dwyane Wade",
+        "points": "22.0",
+        "rebounds": "4.7",
+        "assists": "5.4"
+    },
+    {
+        "player": "Bill Walton",
+        "points": "13.3",
+        "rebounds": "10.5",
+        "assists": "3.4"
+    },
+    {
+        "player": "Jerry West",
+        "points": "27.0",
+        "rebounds": "5.8",
+        "assists": "6.7"
+    },
+    {
+        "player": "Russell Westbrook",
+        "points": "21.9",
+        "rebounds": "7.2",
+        "assists": "8.2"
+    },
+    {
+        "player": "Lenny Wilkens",
+        "points": "16.5",
+        "rebounds": "4.7",
+        "assists": "6.7"
+    },
+    {
+        "player": "Dominique Wilkins",
+        "points": "24.8",
+        "rebounds": "6.7",
+        "assists": "2.5"
+    },
+    {
+        "player": "James Worthy",
+        "points": "17.6",
+        "rebounds": "5.1",
+        "assists": "3.0"
+    }
+];
+
+// NBA average stats
+var nbaAvg = {"points": 20.596052631578946, "rebounds": 8.24342105263158, "assists": 4.563157894736841};
+
+
+// Combine player data and NBA average data
+var combinedData = data.concat([nbaAvg]);
+
+// Define a map of player names and their image URLs
+var playerImages = {'Kareem Abdul-Jabbar': 'https://www.basketball-reference.com/req/202106291/images/headshots/abdulka01.jpg',
+ 'Ray Allen': 'https://www.basketball-reference.com/req/202106291/images/headshots/allenra02.jpg',
+ 'Giannis Antetokounmpo': 'https://www.basketball-reference.com/req/202106291/images/headshots/antetgi01.jpg',
+ 'Carmelo Anthony': 'https://www.basketball-reference.com/req/202106291/images/headshots/anthoca01.jpg',
+ 'Tiny Archibald': 'https://www.basketball-reference.com/req/202106291/images/headshots/architi01.jpg',
+ 'Paul Arizin': 'https://www.basketball-reference.com/req/202106291/images/headshots/arizipa01.jpg',
+ 'Charles Barkley': 'https://www.basketball-reference.com/req/202106291/images/headshots/barklch01.jpg',
+ 'Rick Barry': 'https://www.basketball-reference.com/req/202106291/images/headshots/barryri01.jpg',
+ 'Elgin Baylor': 'https://www.basketball-reference.com/req/202106291/images/headshots/bayloel01.jpg',
+ 'Dave Bing': 'https://www.basketball-reference.com/req/202106291/images/headshots/bingda01.jpg',
+ 'Larry Bird': 'https://www.basketball-reference.com/req/202106291/images/headshots/birdla01.jpg',
+ 'Kobe Bryant': 'https://www.basketball-reference.com/req/202106291/images/headshots/bryanko01.jpg',
+ 'Wilt Chamberlain': 'https://www.basketball-reference.com/req/202106291/images/headshots/chambwi01.jpg',
+ 'Bob Cousy': 'https://www.basketball-reference.com/req/202106291/images/headshots/cousybo01.jpg',
+ 'Dave Cowens': 'https://www.basketball-reference.com/req/202106291/images/headshots/cowenda01.jpg',
+ 'Billy Cunningham': 'https://www.basketball-reference.com/req/202106291/images/headshots/cunnibi01.jpg',
+ 'Stephen Curry': 'https://www.basketball-reference.com/req/202106291/images/headshots/curryst01.jpg',
+ 'Anthony Davis': 'https://www.basketball-reference.com/req/202106291/images/headshots/davisan02.jpg',
+ 'Dave DeBusschere': 'https://www.basketball-reference.com/req/202106291/images/headshots/debusda01.jpg',
+ 'Clyde Drexler': 'https://www.basketball-reference.com/req/202106291/images/headshots/drexlcl01.jpg',
+ 'Tim Duncan': 'https://www.basketball-reference.com/req/202106291/images/headshots/duncati01.jpg',
+ 'Kevin Durant': 'https://www.basketball-reference.com/req/202106291/images/headshots/duranke01.jpg',
+ 'Julius Erving': 'https://www.basketball-reference.com/req/202106291/images/headshots/ervinju01.jpg',
+ 'Patrick Ewing': 'https://www.basketball-reference.com/req/202106291/images/headshots/ewingpa01.jpg',
+ 'Walt Frazier': 'https://www.basketball-reference.com/req/202106291/images/headshots/fraziwa01.jpg',
+ 'Kevin Garnett': 'https://www.basketball-reference.com/req/202106291/images/headshots/garneke01.jpg',
+ 'George Gervin': 'https://www.basketball-reference.com/req/202106291/images/headshots/gervige01.jpg',
+ 'Hal Greer': 'https://www.basketball-reference.com/req/202106291/images/headshots/greerha01.jpg',
+ 'James Harden': 'https://www.basketball-reference.com/req/202106291/images/headshots/hardeja01.jpg',
+ 'John Havlicek': 'https://www.basketball-reference.com/req/202106291/images/headshots/havlijo01.jpg',
+ 'Elvin Hayes': 'https://www.basketball-reference.com/req/202106291/images/headshots/hayesel01.jpg',
+ 'Allen Iverson': 'https://www.basketball-reference.com/req/202106291/images/headshots/iversal01.jpg',
+ 'LeBron James': 'https://www.basketball-reference.com/req/202106291/images/headshots/jamesle01.jpg',
+ 'Magic Johnson': 'https://www.basketball-reference.com/req/202106291/images/headshots/johnsma02.jpg',
+ 'Sam Jones': 'https://www.basketball-reference.com/req/202106291/images/headshots/jonessa01.jpg',
+ 'Michael Jordan': 'https://www.basketball-reference.com/req/202106291/images/headshots/jordami01.jpg',
+ 'Jason Kidd': 'https://www.basketball-reference.com/req/202106291/images/headshots/kiddja01.jpg',
+ 'Kawhi Leonard': 'https://www.basketball-reference.com/req/202106291/images/headshots/leonaka01.jpg',
+ 'Damian Lillard': 'https://www.basketball-reference.com/req/202106291/images/headshots/lillada01.jpg',
+ 'Jerry Lucas': 'https://www.basketball-reference.com/req/202106291/images/headshots/lucasje01.jpg',
+ 'Karl Malone': 'https://www.basketball-reference.com/req/202106291/images/headshots/malonka01.jpg',
+ 'Moses Malone': 'https://www.basketball-reference.com/req/202106291/images/headshots/malonmo01.jpg',
+ 'Pete Maravich': 'https://www.basketball-reference.com/req/202106291/images/headshots/maravpe01.jpg',
+ 'Bob McAdoo': 'https://www.basketball-reference.com/req/202106291/images/headshots/mcadobo01.jpg',
+ 'Kevin McHale': 'https://www.basketball-reference.com/req/202106291/images/headshots/mchalke01.jpg',
+ 'George Mikan': 'https://www.basketball-reference.com/req/202106291/images/headshots/mikange01.jpg',
+ 'Reggie Miller': 'https://www.basketball-reference.com/req/202106291/images/headshots/millere01.jpg',
+ 'Earl Monroe': 'https://www.basketball-reference.com/req/202106291/images/headshots/monroea01.jpg',
+ 'Steve Nash': 'https://www.basketball-reference.com/req/202106291/images/headshots/nashst01.jpg',
+ 'Dirk Nowitzki': 'https://www.basketball-reference.com/req/202106291/images/headshots/nowitdi01.jpg',
+ "Shaquille O'Neal": 'https://www.basketball-reference.com/req/202106291/images/headshots/onealsh01.jpg',
+ 'Hakeem Olajuwon': 'https://www.basketball-reference.com/req/202106291/images/headshots/olajuha01.jpg',
+ 'Robert Parish': 'https://www.basketball-reference.com/req/202106291/images/headshots/parisro01.jpg',
+ 'Chris Paul': 'https://www.basketball-reference.com/req/202106291/images/headshots/paulch01.jpg',
+ 'Gary Payton': 'https://www.basketball-reference.com/req/202106291/images/headshots/paytoga01.jpg',
+ 'Bob Pettit': 'https://www.basketball-reference.com/req/202106291/images/headshots/pettibo01.jpg',
+ 'Paul Pierce': 'https://www.basketball-reference.com/req/202106291/images/headshots/piercpa01.jpg',
+ 'Scottie Pippen': 'https://www.basketball-reference.com/req/202106291/images/headshots/pippesc01.jpg',
+ 'Willis Reed': 'https://www.basketball-reference.com/req/202106291/images/headshots/reedwi01.jpg',
+ 'Oscar Robertson': 'https://www.basketball-reference.com/req/202106291/images/headshots/roberos01.jpg',
+ 'David Robinson': 'https://www.basketball-reference.com/req/202106291/images/headshots/robinda01.jpg',
+ 'Dennis Rodman': 'https://www.basketball-reference.com/req/202106291/images/headshots/rodmade01.jpg',
+ 'Bill Russell': 'https://www.basketball-reference.com/req/202106291/images/headshots/russebi01.jpg',
+ 'Dolph Schayes': 'https://www.basketball-reference.com/req/202106291/images/headshots/schaydo01.jpg',
+ 'Bill Sharman': 'https://www.basketball-reference.com/req/202106291/images/headshots/sharmbi01.jpg',
+ 'John Stockton': 'https://www.basketball-reference.com/req/202106291/images/headshots/stockjo01.jpg',
+ 'Isiah Thomas': 'https://www.basketball-reference.com/req/202106291/images/headshots/thomais01.jpg',
+ 'Nate Thurmond': 'https://www.basketball-reference.com/req/202106291/images/headshots/thurmna01.jpg',
+ 'Wes Unseld': 'https://www.basketball-reference.com/req/202106291/images/headshots/unselwe01.jpg',
+ 'Dwyane Wade': 'https://www.basketball-reference.com/req/202106291/images/headshots/wadedw01.jpg',
+ 'Bill Walton': 'https://www.basketball-reference.com/req/202106291/images/headshots/waltobi01.jpg',
+ 'Jerry West': 'https://www.basketball-reference.com/req/202106291/images/headshots/westje01.jpg',
+ 'Russell Westbrook': 'https://www.basketball-reference.com/req/202106291/images/headshots/westbru01.jpg',
+ 'Lenny Wilkens': 'https://www.basketball-reference.com/req/202106291/images/headshots/wilkele01.jpg',
+ 'Dominique Wilkins': 'https://www.basketball-reference.com/req/202106291/images/headshots/wilkido01.jpg',
+ 'James Worthy': 'https://www.basketball-reference.com/req/202106291/images/headshots/worthja01.jpg'};
+
+// Function to create buttons for each player
+function createButtons() {
+  var buttonsContainer = document.getElementById("buttons-container");
+  data.forEach(function(player) {
+    var button = document.createElement("button");
+    button.style.display = "block";
+    button.style.marginBottom = "5px"; // Add some margin between buttons
+
+    var container = document.createElement("div");
+    container.style.display = "stretch";
+    container.style.alignItems = "stretch";
+
+    // Check if the player name exists in the playerImages map
+    if (player.player in playerImages) {
+      var img = document.createElement("img");
+      img.src = playerImages[player.player];
+      img.alt = player.player;
+      img.style.width = "90px"; // Adjust the width of the image as needed
+      img.style.marginRight = "5px"; // Add some spacing between the image and the text
+      container.appendChild(img);
+    }
+
+    var text = document.createElement("span");
+    text.textContent = player.player;
+    container.appendChild(text);
+
+    button.appendChild(container);
+
+    button.addEventListener("click", function() {
+      updateVisualization(player.player);
+    });
+
+    buttonsContainer.appendChild(button);
+  });
+}
+
+// Function to update visualization based on selected player
+function updateVisualization(playerName) {
+  var playerData = data.find(function(d) { return d.player === playerName; });
+  
+  // Remove previous visualization
+  d3.select("#chart").selectAll("*").remove();
+  
+  // Define the SVG dimensions
+  var svgWidth = 800;
+  var svgHeight = 400;
+
+  // Define margins
+  var margin = { top: 20, right: 20, bottom: 30, left: 40 };
+  var width = svgWidth - margin.left - margin.right;
+  var height = svgHeight - margin.top - margin.bottom;
+
+  // Create SVG element
+  var svg = d3.select("#chart")
+    .append("svg")
+      .attr("width", svgWidth)
+      .attr("height", svgHeight)
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  // Define scales
+  var xScale = d3.scaleBand()
+    .range([0, width])
+    .domain(Object.keys(playerData).filter(key => key !== "player"))
+    .padding(0.1);
+
+  var yScale = d3.scaleLinear()
+    .range([height, 0])
+    .domain([0, 30]); // Adjusted domain to go up to 30
+
+  // Create bars for player's stats
+  svg.selectAll(".player-bar")
+    .data(Object.entries(playerData).filter(d => d[0] !== "player"))
+    .enter().append("rect")
+      .attr("class", "player-bar")
+      .attr("x", function(d) { return xScale(d[0]); })
+      .attr("width", xScale.bandwidth() / 2)
+      .attr("y", function(d) { return yScale(d[1]); })
+      .attr("height", function(d) { return height - yScale(d[1]); })
+      .style("fill", "blue");
+
+  // Create bars for NBA average stats
+  svg.selectAll(".nba-avg-bar")
+    .data(Object.entries(nbaAvg))
+    .enter().append("rect")
+      .attr("class", "nba-avg-bar")
+      .attr("x", function(d) { return xScale(d[0]) + xScale.bandwidth() / 2; })
+      .attr("width", xScale.bandwidth() / 2)
+      .attr("y", function(d) { return yScale(d[1]); })
+      .attr("height", function(d) { return height - yScale(d[1]); })
+      .style("fill", "red");
+
+  // Add x-axis
+  svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(xScale));
+
+  // Add y-axis
+  svg.append("g")
+    .call(d3.axisLeft(yScale));
+
+  // Add legend
+  svg.append("text")
+    .attr("x", 400)
+    .attr("y", 10)
+    .style("fill", "blue")
+    .text(playerData.player + " Stats");
+
+  svg.append("text")
+    .attr("x", 400)
+    .attr("y", 30)
+    .style("fill", "red")
+    .text("NBA Average");
+
+}
+
+// Call function to create buttons when the page loads
+window.onload = createButtons;
+
+</script>
+
+</body>
+</html>
